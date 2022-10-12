@@ -5,7 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "type": "pwa-node", // cambiado de "node" a "pwa-node" para ENOENT
+            "resolveSourceMapLocations": [ // Necesario para ENOENT demás de "pwa-node"
+              "${workspaceFolder}/**",
+              "!**/node_modules/**"
+            ],
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
@@ -16,5 +20,5 @@
                 "${workspaceFolder}/**/*.js"
             ]
         }
-    ]
+    ],
 }

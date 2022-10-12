@@ -16,6 +16,14 @@
             ],
             "group": "build",
             "label": "tsc: compilación: tsconfig.json"
+        },{
+            "label": "Migrar a nueva versión",
+            "type": "shell",
+            "command": "npx knex migrate:latest --knexfile src/db/knexfile.js"
+        },{
+            "label": "Rollback de migración a nueva versión",
+            "type": "shell",
+            "command": "npx knex migrate:rollback"
         }
     ]
 }
