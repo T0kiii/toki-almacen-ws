@@ -1,12 +1,13 @@
 import { crearCasaDao } from '../dao/casa'
-import { Casa, CasaResponse } from '../types/casa'
+import { formateaError } from '../db/db'
+import { Casa } from '../types/casa'
 
-export async function crearCasaServ(casaDto: Casa): Promise<CasaResponse> {
-  let respuesta: CasaResponse = {
+export async function crearCasaServ(casaDto: Casa): Promise<Respuesta> {
+  let respuesta: Respuesta = {
     exito: false,
   }
   try {
-    const creados = await crearCasaDao(casaDto.nombreCasa, casaDto.nombreCasa)
+    const creados = await crearCasaDao(casaDto.nombreCasa, casaDto.descCasa)
 
     if (creados.length > 0) {
       respuesta.exito = true
@@ -14,9 +15,8 @@ export async function crearCasaServ(casaDto: Casa): Promise<CasaResponse> {
 
     return respuesta
   } catch (error) {
-    console.error('Fallo al crear casa')
-    respuesta.exito = false
-    respuesta.mensaje = 'Fallo de la aplicación al crear la casa';
+    console.error('Fallo al crear casa');
+    formateaError(error, respuesta);
 
     return respuesta
   }
