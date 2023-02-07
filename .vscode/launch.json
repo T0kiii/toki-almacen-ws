@@ -18,7 +18,23 @@
             "program": "${workspaceFolder}\\src\\app.ts",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
-            ]
+            ],
+            "linux": {
+                "type": "pwa-node", // cambiado de "node" a "pwa-node" para ENOENT
+                "resolveSourceMapLocations": [ // Necesario para ENOENT demás de "pwa-node"
+                    "${workspaceFolder}/**",
+                    "!**/node_modules/**"
+                ],
+                "request": "launch",
+                "name": "Launch Program",
+                "skipFiles": [
+                    "<node_internals>/**"
+                ],
+                "program": "${workspaceFolder}/src/app.ts",
+                "outFiles": [
+                    "${workspaceFolder}/**/*.js"
+                ],
+            }
         }
     ],
 }

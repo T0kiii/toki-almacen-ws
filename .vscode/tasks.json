@@ -16,14 +16,99 @@
             ],
             "group": "build",
             "label": "tsc: compilación: tsconfig.json"
-        },{
+        },
+        {
             "label": "Migrar a nueva versión",
             "type": "shell",
             "command": "npx knex migrate:latest --knexfile src/db/knexfile.js"
-        },{
+        },
+        {
             "label": "Rollback de migración a nueva versión",
             "type": "shell",
             "command": "npx knex migrate:rollback"
+        },
+        {
+            "label": "Arrancar Docker al inicio siempre",
+            "type": "shell",
+            "command": "sudo systemctl enable docker"
+        },
+        {
+            "label": "Arrancar Docker daemon",
+            "type": "shell",
+            "command": "sudo systemctl start docker"
+        },
+        {
+            "label": "SOLO CREACIÓN imagen de base de datos test",
+            "type": "shell",
+            "command": "docker build -t tokibd_dev -f Dockerfile .",
+            "problemMatcher":[]
+        },
+        {
+            "label": "SOLO CREACIÓN contenedor de base de datos test DATOS PERSISTENTES",
+            "detail": "Los archivos de la base de datos del contenedor se almacenarán también en la carpeta container del proyecto",
+            "type": "shell",
+            "command": "docker run --name tokibd_dev -p 3306:3306 --mount type=bind,source=$(pwd)/container,target=/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=desa -e MYSQL_PASSWORD=rrollo -e MYSQL_DATABASE=tokibd -d tokibd_dev",
+            "dependsOn": [
+                "Crear imagen de base de datos test"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "SOLO CREACIÓN contenedor de base de datos test",
+            "type": "shell",
+            "command":
+            "docker run --name tokibd_dev -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=desa -e MYSQL_PASSWORD=rrollo -e MYSQL_DATABASE=tokibd -d tokibd_dev",
+            "dependsOn":["Crear imagen de base de datos test"],
+            "problemMatcher": []
+        },
+        {
+            "label": "SOLO CREACIÓN crear base de datos de prueba",
+            "type": "shell",
+            "command": "docker start tokibd_dev",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "SOLO CREACIÓN imagen de base de datos test",
+                "SOLO CREACIÓN contenedor de base de datos test"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Generar estructura base de datos de prueba",
+            "type": "shell",
+            "command": "docker exec -i tokibd_dev mysql -uroot -proot tokibd < genera_bd.sql",
+            "problemMatcher": []
+        },
+        {
+            "label": "Arrancar base de datos de prueba",
+            "type": "shell",
+            "command": "docker start tokibd_dev",
+            "problemMatcher": []
+        },
+        {
+            "label": "Arrancar base de datos de prueba con SUDO",
+            "type": "shell",
+            "command": "sudo docker start tokibd_dev",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run db container",
+            "type": "docker-run",
+            "dockerRun": {
+                "image": "./dockerfile",
+                "ports": [
+                    {
+                        "containerPort": 3306,
+                        "hostPort": 3306
+                    }
+                ],
+                "volumes": [
+                    {
+                        "localPath": "${workspaceFolder}/containers",
+                        "containerPath": "/containers/tokibd"
+                    }
+                ],
+                "remove": true
+            }
         }
     ]
 }

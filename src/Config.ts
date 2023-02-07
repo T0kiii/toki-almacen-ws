@@ -4,14 +4,14 @@ dotenv.config();
 
 export namespace Database {
   export const schema = 'api'
-  export const database = process.env.TOKIDB
-  export const user = process.env.TOKIDBUSER
+  export const database = process.env.TOKIDB || 'tokibd'
+  export const user = process.env.TOKIDBUSER || 'desa'
   // export const name = config
   // export const user = config
-  export const password = process.env.TOKIDBPASSWORD
+  export const password = process.env.TOKIDBPASSWORD || 'rrollo'
   // export const hostname = config
-  export const host = process.env.TOKIDBIP || '127.0.0.1'
-  export const port = Number(process.env.TOKIDBPORT || '0')
+  export const host = process.env.TOKIDBIP || '172.17.0.2'
+  export const port = Number(process.env.TOKIDBPORT || '3306')
   export const poolMin = Number(process.env.DATABASE_POOL_MIN || '0')
   export const poolMax = Number(process.env.DATABASE_POOL_MAX || '10')
   export const poolIdle = Number(process.env.DATABASE_POOL_IDLE || '10000')

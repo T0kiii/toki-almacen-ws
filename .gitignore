@@ -105,3 +105,6 @@ dist
 
 # Archivos compilados de typescript
 build/
+
+# Carpeta con datos persistentes de la base de datos de pruebas
+container/
