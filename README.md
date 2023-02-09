@@ -2,9 +2,10 @@
 
 Servidor web Node Espress sencillito
 
-```mermaid:
-graph TD;
-controller --> service --> DAO;
+```mermaid
+  graph TD;
+      Controller-->Servicio;
+      Servicio-->DAO;
 ```
 
 DAO = _data access object_
