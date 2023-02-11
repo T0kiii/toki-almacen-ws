@@ -1,29 +1,24 @@
 import { Request, Response } from 'express'
-import { borraCasaServ, creaCasaServ } from '../service/casa'
+import { borraCasaServ, creaCasaServ, getCasaServ } from '../service/casa'
 
+
+export async function getCasaCtrl(req: Request, res: Response) {
+  const resServicio = await getCasaServ(req.body);
+  res.status(201).json(resServicio);
+
+  return res;
+}
 
 export async function creaCasaCtrl(req: Request, res: Response): Promise<Response> {
-  try {
-    const resServicio = await creaCasaServ(req.body)
-    res.status(201).json(resServicio);
-
-  } catch (error) {
-    console.error(error);
-    console.error('No se ha podido crear la casa');
-  }
+  const resServicio = await creaCasaServ(req.body);
+  res.status(201).json(resServicio);
 
   return res;
 }
 
 export async function borraCasaCtrl(req: Request, res: Response): Promise<Response> {
-  try {
-    const resServicio = await borraCasaServ(req.body)
-    res.status(201).json(resServicio);
-
-  } catch (error) {
-    console.error(error);
-    console.error('No se ha podido borrar la casa');
-  }
+  const resServicio = await borraCasaServ(req.body);
+  res.status(201).json(resServicio);
 
   return res;
 }

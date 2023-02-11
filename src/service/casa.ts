@@ -1,43 +1,52 @@
-import { borraCasaDao, creaCasaDao } from '../dao/casa'
+import { borraCasaDao, creaCasaDao, getCasaDao } from '../dao/casa'
 import { formateaError } from '../db/db'
 import { Casa } from '../types/casa'
 
-export async function creaCasaServ(casaDto: Casa): Promise<Respuesta> {
-  let respuesta: Respuesta = {
-    exito: false,
-  }
+export async function getCasaServ(casa: Casa): Promise<Casa | Respuesta> {
+  let respuesta: Respuesta = { exito: false }
   try {
-    const creados = await creaCasaDao(casaDto.nombreCasa, casaDto.descCasa)
+    const casaRecuperada = await getCasaDao(casa);
 
-    if (creados.length > 0) {
-      respuesta.exito = true
-    }
-
-    return respuesta
+    return casaRecuperada;
   } catch (error) {
-    console.error('Fallo al crear casa');
+    respuesta.mensaje = `No existe la casa ${casa.nombreCasa}`;
+    console.error(respuesta.mensaje);
     formateaError(error, respuesta);
 
-    return respuesta
+    return respuesta;
   }
 }
 
-export async function borraCasaServ(casaDto: Casa): Promise<Respuesta> {
-  let respuesta: Respuesta = {
-    exito: false,
-  }
+export async function creaCasaServ(casa: Casa): Promise<Respuesta> {
+  let respuesta: Respuesta = { exito: false }
   try {
-    const borrados = await borraCasaDao(casaDto.nombreCasa)
+    const creados = await creaCasaDao(casa.nombreCasa, casa.descCasa);
 
-    if (borrados > 0) {
-      respuesta.exito = true
-    }
+    if (creados.length > 0) {respuesta.exito = true;}
 
     return respuesta
   } catch (error) {
-    console.error('Fallo al crear casa');
+    respuesta.mensaje = `Fallo al crear la casa ${casa.nombreCasa}`;
+    console.error(respuesta.mensaje);
     formateaError(error, respuesta);
 
+    return respuesta;
+  }
+}
+
+export async function borraCasaServ(casa: Casa): Promise<Respuesta> {
+  let respuesta: Respuesta = { exito: false }
+  try {
+    const borrados = await borraCasaDao(casa.nombreCasa);
+
+    if (borrados > 0) {respuesta.exito = true;}
+
     return respuesta
+  } catch (error) {
+    respuesta.mensaje = `Fallo al borrar la casa ${casa.nombreCasa}`;
+    console.error(respuesta.mensaje);
+    formateaError(error, respuesta);
+
+    return respuesta;
   }
 }
