@@ -1,5 +1,5 @@
 import express from "express";
-import { borraCasaCtrl, creaCasaCtrl, getCasaCtrl } from "../controller/casa";
+import { actualizaCasaCtrl, borraCasaCtrl, creaCasaCtrl, getCasaCtrl } from "../controller/casa";
 
 export const router = express.Router();
 
@@ -9,5 +9,6 @@ export const router = express.Router();
 // DELETE delete
 
 router.get('/casa', getCasaCtrl);
+router.put('/casa', actualizaCasaCtrl);
 router.post('/casa', creaCasaCtrl);
 router.delete('/casa', borraCasaCtrl);

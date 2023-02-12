@@ -1,6 +1,7 @@
 import { Request } from "express"
 
 type Casa = {
+  idCasa?: string,
   nombreCasa: string,
   descCasa?: string,
 }

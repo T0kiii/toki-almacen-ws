@@ -1,9 +1,16 @@
 import { Request, Response } from 'express'
-import { borraCasaServ, creaCasaServ, getCasaServ } from '../service/casa'
+import { actualizaCasaServ, borraCasaServ, creaCasaServ, getCasaServ } from '../service/casa'
 
 
 export async function getCasaCtrl(req: Request, res: Response) {
   const resServicio = await getCasaServ(req.body);
+  res.status(201).json(resServicio);
+
+  return res;
+}
+
+export async function actualizaCasaCtrl(req: Request, res: Response) {
+  const resServicio = await actualizaCasaServ(req.body);
   res.status(201).json(resServicio);
 
   return res;

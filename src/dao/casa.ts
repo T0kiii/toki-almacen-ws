@@ -4,17 +4,59 @@ import { Casa, getCasaOuputType } from "../types/casa";
 
 // DAO: data access object
 
-export async function getCasaDao(casa: Casa):
-  Promise<getCasaOuputType> {
+export async function getCasaDao(casa: Casa): Promise<getCasaOuputType> {
+  
+  let respuesta: getCasaOuputType = { numResultados: 0 }
+
   const rows = await db('CASA').select()
     .where("cas_nombre", casa.nombreCasa);
   
-  const casaRecuperada = rows as unknown as Casa
+  if (rows.length === 1 ) {
+    const casaRecuperada: Casa = {
+      idCasa: rows[0].cas_id,
+      nombreCasa: rows[0].cas_nombre,
+      descCasa: rows[0].cas_desc
+    };
 
-  const respuesta: getCasaOuputType = { casa: casaRecuperada, numResultados: rows.length }
+    respuesta  = { casa: casaRecuperada, numResultados: rows.length }
+    return respuesta;
+  }
   
   return respuesta;
   }
+
+
+export async function actualizaCasaDao(casa: Casa):
+  Promise<number> {
+  const actualizados = await db('CASA')
+  .where("cas_nombre", casa.nombreCasa)
+  .update({
+    cas_nombre: casa.nombreCasa,
+    cas_desc: casa.descCasa
+  });
+
+  // VERSIÓN CON COMPROBACIÓN PROPIA
+  // No la pongo porque prefiero dar más información desde el service
+  // si hay algún error
+  
+  // let actualizados = 0;
+
+  // const rows = await db('CASA').select()
+  //   .where("cas_nombre", casa.nombreCasa)
+  //   .then(async respuesta => {
+  //     if (respuesta.length = 1) {
+  //       actualizados = await db('CASA')
+  //         .where("cas_nombre", casa.nombreCasa)
+  //         .update({
+  //           cas_nombre: casa.nombreCasa,
+  //           cas_desc: casa.descCasa
+  //         });
+  //     }
+  //   }).catch(err => console.error(err));
+
+  return actualizados;
+}
+
 
 export async function creaCasaDao(nombreCasa: string, descCasa: string | undefined):
   Promise<Array<string>> {
@@ -27,6 +69,7 @@ export async function creaCasaDao(nombreCasa: string, descCasa: string | undefin
 
   return id;
 }
+
 
 export async function borraCasaDao(nombreCasa: string):
   Promise<number> {
