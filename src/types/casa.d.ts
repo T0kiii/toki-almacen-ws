@@ -8,7 +8,7 @@ type Casa = {
 
 type getCasaOuputType = {
   casa?: Casa,
-  numResultados: number
+  respuesta: Respuesta
 }
 
 interface CasaRequest extends Request {

@@ -5,8 +5,8 @@ import { Casa, getCasaOuputType } from "../types/casa";
 // DAO: data access object
 
 export async function getCasaDao(casa: Casa): Promise<getCasaOuputType> {
-  
-  let respuesta: getCasaOuputType = { numResultados: 0 }
+  let respuesta: Respuesta = {exito: false}
+  let getCasaOuput: getCasaOuputType = { respuesta }
 
   const rows = await db('CASA').select()
     .where("cas_nombre", casa.nombreCasa);
@@ -18,11 +18,17 @@ export async function getCasaDao(casa: Casa): Promise<getCasaOuputType> {
       descCasa: rows[0].cas_desc
     };
 
-    respuesta  = { casa: casaRecuperada, numResultados: rows.length }
-    return respuesta;
+    respuesta.exito = true;
+    getCasaOuput = { casa: casaRecuperada, respuesta }
+
+  } else if (rows.length === 0){
+    respuesta.mensaje = `No existe la casa ${casa.nombreCasa}`;
+
+  } else if (rows.length > 1) { 
+    respuesta.mensaje = `Existen varias casas ${casa.nombreCasa} y no debería`;
   }
-  
-  return respuesta;
+
+  return getCasaOuput;
   }
 
 

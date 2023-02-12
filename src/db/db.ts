@@ -36,10 +36,10 @@ export async function comprobarConexion() {
 
 export default { db }
 
-export function formateaError(err: unknown, res: Respuesta) {
-
-  res.exito = false;
-  res.mensaje = `Error: ${err}`;
+export function formateaError(err: unknown, respuesta: Respuesta) {
+  console.error(respuesta.mensaje);
+  respuesta.exito = false;
+  respuesta.mensaje = `Error: ${err}`;
 
   // TODO: Mirar a ver cómo formatear los errores de Knex. Me saltan los tipos.
   /* if (err instanceof Error) {
