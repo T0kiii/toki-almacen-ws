@@ -109,6 +109,12 @@
                 ],
                 "remove": true
             }
+        },
+        {
+          "label": "Arrancar base de datos de prueba con SUDO",
+          "type": "shell",
+          "command": "sudo docker start tokibd_dev",
+          "problemMatcher": []
         }
     ]
 }
